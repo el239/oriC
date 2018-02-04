@@ -2,8 +2,11 @@
 public class part2{
 	public static void main(String args[]){
 	   oriC("aaggcc"); // TEST CASE 1: basic functionality
-	   oriC("ATGGTGCC"); // TEST CASE 2: non-case sensitive
-	   oriC("ccataca"); // handles oriC at sequence start
+	   oriC("GGCCATGGTCC"); // TEST CASE 2: non-case sensitive, handles ties !!!!!!!!!!
+	   oriC("ccataca"); // TEST CASE 3: handles oriC at sequence start
+	   oriC("ataaata"); // TEST CASE 4: handles lack of g/c bases
+	   oriC("ccaggca"); // TEST CASE 5: handles 3 way ties and ties with origin !!!!!!!!
+	   
     } // end main
 	
 	public static void oriC(String input){
@@ -31,7 +34,6 @@ public class part2{
 		} // end for
 		
 		if (cCount == 0 && gCount == 0){
-			System.out.println("No cytosine or guanine bases present by which to predict oriC.");
 		    return;
 		} // end if
 
@@ -45,8 +47,10 @@ public class part2{
 			if (String.valueOf(input.charAt(i)).equals("C") || String.valueOf(input.charAt(i)).equals("c")){
 				ratioMeter--;
 			} // end if
-			if (ratioMeter == marker && ratioMeter > 0){ // appends positive tie cases
-				if(i + 1 > potentialSites.charAt(potentialSites.length()-1)){ // prevents appending with same base #
+			if (ratioMeter == marker && ratioMeter > 0 && // conditional prevents A and T indexes from being appended
+			(String.valueOf(input.charAt(i)).equals("G") || 
+			String.valueOf(input.charAt(i)).equals("g"))) { // appends positive tie cases
+				if (i > potentialSites.length()) { // prevents appending with same base #
 				potentialSites += Integer.toString(i + 1); 
 				} // end if
 			} // end if
@@ -70,11 +74,11 @@ public class part2{
 			} // end if
 		} // end for
 		if (potentialSites.length() == 0) {
-		    System.out.println("The most likely oriC site based on G/C ratio is at the origin.");
+		    System.out.print("\nThe most likely oriC site based on G/C ratio is at the origin.");
 		    return;
 		} // end if
 		else {
-			System.out.println("The most likely oriC sites based on G/C ratio at the origin");
+			System.out.print("\nThe most likely oriC sites based on G/C ratio are at the origin");
 			if(potentialSites.length() == 1){ // if one other incident of ratio equaling zero
 			    System.out.println(" and " + potentialSites.charAt(0) + ".");
 			    return;
@@ -84,22 +88,22 @@ public class part2{
 			    for (j = 0; j < potentialSites.length() - 1; j++){
 				   System.out.print(potentialSites.charAt(j) + ", ");
 			    } // end for
-			    System.out.println("and " + potentialSites.charAt(potentialSites.length() - 1) + ".");   
+			    System.out.print("and " + potentialSites.charAt(potentialSites.length() - 1) + ".");   
 			    return; 
 			} // end else
 		} // end else    
 		} // end if
 		
 		if(potentialSites.length() == 1){
-			System.out.println("The most likely oriC site based on G/C ratio is after base # " + potentialSites);
+			System.out.print("\nThe most likely oriC site based on G/C ratio is after base # " + potentialSites + ".");
 		    return;
 		} // end if
 		
 		if(potentialSites.length() > 1){
-			System.out.println("The most likely oriC sites based on G/C ratio are after base numbers ");
+			System.out.print("\nThe most likely oriC sites based on G/C ratio are after base numbers ");
 			int j;
 			if(potentialSites.length() == 2){
-			    System.out.println(potentialSites.charAt(0) + " and " + potentialSites.charAt(1) + ".");
+			    System.out.print(potentialSites.charAt(0) + " and " + potentialSites.charAt(1) + ".");
 			    return;
 			} // end if
 			else{
